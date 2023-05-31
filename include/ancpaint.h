@@ -13,8 +13,10 @@ using namespace std;
 
 class reader {
 public:
-    static int pair_reader(string& first_file, string& second_file);
-    int bed_reader(string& first_file, string& second_file);
+    static int filename_converter();
+    static int pair_reader();
+    static int fasta_reader();
+    static int bed_reader();
 };
 
 class utils {

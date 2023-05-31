@@ -3,5 +3,10 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/fCWT" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/seqan3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/seqan3/submodules/cereal" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/seqan3/submodules/sdsl-lite" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/seqan3/submodules/sdsl-lite/external/cereal" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/seqan3/submodules/sdsl-lite/external/googletest" vcs="Git" />
   </component>
 </project>
