@@ -15,7 +15,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(seqan3)
 
-add_executable(ancpaint main.cpp src/ancpaint.cpp)
+add_executable(ancpaint main.cpp src/ancpaint.cpp include/ancpaint.h)
 
 target_compile_options(ancpaint PUBLIC -Wall -Werror)
 target_link_libraries(ancpaint ${CMAKE_SOURCE_DIR}/fCWT/build/debug/fCWT.lib)
