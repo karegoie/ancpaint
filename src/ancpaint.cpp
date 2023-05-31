@@ -9,7 +9,7 @@
 #include "../include/ancpaint.h"
 
 //
-// Created by user on 2023-05-30.
+// Created by hyunsu on 2023-05-30.
 //
 
 int reader::filename_converter() {
@@ -40,7 +40,7 @@ int reader::bed_reader() {
     std::ifstream file("anno.bed");
     if (file.is_open()) {
         std::string line;
-        std::vector<std::vector<std::string>> genome;
+        std::vector<std::vector<std::string>> anno;
 
         while (std::getline(file, line)) {
             std::vector<std::string> row;
@@ -50,7 +50,7 @@ int reader::bed_reader() {
             while (std::getline(iss, value, '\t')) {
                 row.emplace_back(value);
             }
-            genome.emplace_back(row);
+            anno.emplace_back(row);
         }
     }
     return 0;
@@ -58,9 +58,23 @@ int reader::bed_reader() {
 
 int reader::fasta_reader() {
     std::string file_name = "seq.fa";
+    std::map<std::string, std::string> genome;
     seqan3::sequence_file_input file_in{file_name};
     for (auto& [seq, id, qual]: file_in) {
-
+        genome.insert(std::pair<std::string, std::string>(id, seq));
     }
+    return 0;
+}
+
+int signal::seq2voss() {
+    std::map<std::string, int> sub;
+    sub["A"] = 0;
+    sub["T"] = 1;
+    sub["G"] = 2;
+    sub["C"] = 3;
+
+    std::vector<int> voss;
+
+
     return 0;
 }

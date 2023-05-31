@@ -6,10 +6,6 @@
 #define ANCPAINT_ANCPAINT_H
 
 #include <iostream>
-#include <vector>
-#include <fstream>
-
-using namespace std;
 
 class reader {
 public:
@@ -24,8 +20,15 @@ public:
     int distance_measure;
     int who_is_first;
     int generate_report;
+    int cross_correlation;
 };
 
+class signal {
+public:
+    static int seq2voss();
+    static int voss2signal;
+    static int cwt;
+};
 
 
 
