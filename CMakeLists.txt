@@ -25,5 +25,3 @@ add_executable(ancpaint main.cpp src/ancpaint.cpp include/ancpaint.h)
 target_compile_options(ancpaint PUBLIC -Wall -Werror)
 target_link_libraries(ancpaint ${CMAKE_SOURCE_DIR}/fCWT/build/debug/fCWT.lib seqan3::seqan3)
 target_include_directories(ancpaint PUBLIC ${CMAKE_SOURCE_DIR}/includes)
-
-

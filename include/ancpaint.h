@@ -17,19 +17,15 @@ public:
 
 class utils {
 public:
-    int distance_measure;
     int who_is_first;
     int generate_report;
     int cross_correlation;
 };
 
-class signal {
+class msa {
 public:
-    static int seq2voss();
-    static int voss2signal;
-    static int cwt;
+    int progressive_align;
+    int distance_measure;
+    static int pairwise_aligner();
 };
-
-
-
 #endif //ANCPAINT_ANCPAINT_H

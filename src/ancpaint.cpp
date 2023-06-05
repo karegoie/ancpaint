@@ -3,14 +3,18 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <filesystem>
+#include <ranges>
 
-#include <seqan3/io/sequence_file/input.hpp>
+#include <seqan3/io/sequence_file/all.hpp>
 
 #include "../include/ancpaint.h"
 
 //
 // Created by hyunsu on 2023-05-30.
 //
+
+//using namespace seqan3::literals;
 
 int reader::filename_converter() {
     //TODO: add
@@ -57,24 +61,22 @@ int reader::bed_reader() {
 }
 
 int reader::fasta_reader() {
-    std::string file_name = "seq.fa";
-    std::map<std::string, std::string> genome;
-    seqan3::sequence_file_input file_in{file_name};
-    for (auto& [seq, id, qual]: file_in) {
-        genome.insert(std::pair<std::string, std::string>(id, seq));
+    std::filesystem::path current_path = std::filesystem::current_path() / "seq.fa";
+    seqan3::sequence_file_input fin{current_path};
+
+    std::map<std::string,std::vector<seqan3::dna5>> genome;
+    for (auto& [seq, id, qual]: fin) {
+        genome.insert(std::make_pair(id, seq));
     }
     return 0;
 }
 
-int signal::seq2voss() {
-    std::map<std::string, int> sub;
-    sub["A"] = 0;
-    sub["T"] = 1;
-    sub["G"] = 2;
-    sub["C"] = 3;
-
-    std::vector<int> voss;
-
+//TODO: write it
+int msa::pairwise_aligner(std::map<std::string, std::vector<seqan3::dna5>> pair1, std::map<std::string, std::vector<seqan3::dna5>> pair2,
+                          std::map<std::string, std::vector<seqan3::dna5>> ancestor) {
+    for (auto i = pair1.begin(); i != pair1.end(); i++) {
+        continue;
+    }
 
     return 0;
 }
