@@ -4,10 +4,9 @@
 #include <vector>
 #include <string>
 #include <filesystem>
-#include <ranges>
-
+#include <math.h>
 #include <seqan3/io/sequence_file/all.hpp>
-
+#include "../fCWT/src/fcwt/fcwt.h"
 #include "../include/ancpaint.h"
 
 //
@@ -71,12 +70,99 @@ int reader::fasta_reader() {
     return 0;
 }
 
-//TODO: write it
-int msa::pairwise_aligner(std::map<std::string, std::vector<seqan3::dna5>> pair1, std::map<std::string, std::vector<seqan3::dna5>> pair2,
-                          std::map<std::string, std::vector<seqan3::dna5>> ancestor) {
-    for (auto i = pair1.begin(); i != pair1.end(); i++) {
-        continue;
+
+int repeat_annotator::seq2voss(seqan3::dna5_vector& sequence) {
+    std::vector<std::array<bool, 4>> one_hot_encoded;
+    for (auto const& nucleotide : sequence)
+    {
+        std::array<bool, 4> encoded{};
+
+        switch (nucleotide.to_char())
+        {
+            case 'A':
+                encoded[0] = true;
+                break;
+            case 'T':
+                encoded[1] = true;
+                break;
+            case 'G':
+                encoded[2] = true;
+                break;
+            case 'C':
+                encoded[3] = true;
+                break;
+            default:
+                encoded[0] = true;
+                break;
+        }
+        one_hot_encoded.push_back(encoded);
     }
+    return 0;
+}
+
+int voss2cwt() {
+
+    int n = 100000; //signal length
+    const int fs = 1000; //sampling frequency
+    float twopi = 2.0*3.1415;
+
+    //3000 frequencies spread logartihmically between 1 and 32 Hz
+    const float f0 = 1;
+    const float f1 = 32;
+    const int fn = 3000;
+
+    //Define number of threads for multithreaded use
+    const int nthreads = 8;
+
+    //input: n real numbers
+    std::vector<float> sig(n);
+
+    //output: n x scales
+    std::vector<complex<float>> tfm(n*fn);
+
+    //initialize with 1 Hz cosine wave
+    for(auto& el : sig) {
+        el = cos(twopi*((float)(&el - &sig[0])/(float)fs));
+    }
+
+    //Create a wavelet object
+    Wavelet *wavelet;
+
+    //Initialize a Morlet wavelet having sigma=2.0;
+    Morlet morl(2.0f);
+    wavelet = &morl;
+
+    //Create the continuous wavelet transform object
+    //constructor(wavelet, nthreads, optplan)
+    //
+    //Arguments
+    //wavelet   - pointer to wavelet object
+    //nthreads  - number of threads to use
+    //optplan   - use FFTW optimization plans if true
+    //normalization - take extra time to normalize time-frequency matrix
+    FCWT fcwt(wavelet, nthreads, true, false);
+
+    //Generate frequencies
+    //constructor(wavelet, dist, fs, f0, f1, fn)
+    //
+    //Arguments
+    //wavelet   - pointer to wavelet object
+    //dist      - FCWT_LOGSCALES | FCWT_LINFREQS for logarithmic or linear distribution frequency range
+    //fs        - sample frequency
+    //f0        - beginning of frequency range
+    //f1        - end of frequency range
+    //fn        - number of wavelets to generate across frequency range
+    Scales scs(wavelet, FCWT_LINFREQS, fs, f0, f1, fn);
+
+    //Perform a CWT
+    //cwt(input, length, output, scales)
+    //
+    //Arguments:
+    //input     - floating pointer to input array
+    //length    - integer signal length
+    //output    - floating pointer to output array
+    //scales    - pointer to scales object
+    fcwt.cwt(&sig[0], n, &tfm[0], &scs);
 
     return 0;
 }
